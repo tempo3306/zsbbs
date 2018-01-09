@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block head %}
+    {% include "tinymce.html" %}
+
+{% endblock %}
+
+
+
+{% block content %}
+    <div >
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="name">标题</label>
+            <input type="text" class="form-control" id="title" placeholder="请输入标题">
+        </div>
+        <label>
+            <textarea name="comment_content"></textarea>
+        </label>
+        <br>
+        <input type="submit" value="提交评论" class="btn btn-default">
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
