@@ -17,8 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url,include
 import bbsapp.urls
+import rest_framework
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'',include(bbsapp.urls)),
+    url(r'^api-auth/',include('rest_framework.urls',namespace='rest_framework')),
+    url(r'^',include('snippets.urls')),
+
 ]
