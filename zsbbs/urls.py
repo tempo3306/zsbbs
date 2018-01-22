@@ -19,11 +19,14 @@ from django.conf.urls import url,include
 import bbsapp.urls
 import rest_framework
 
+from rest_framework.schemas import get_schema_view
 
+schema_view = get_schema_view(title='Pastebin API')
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'',include(bbsapp.urls)),
     url(r'^api-auth/',include('rest_framework.urls',namespace='rest_framework')),
-    url(r'^',include('snippets.urls')),
+    url(r'^',include('playtogether.urls')),
+url(r'^schema/$', schema_view),
 
 ]

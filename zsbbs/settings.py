@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'bbsapp',
     'tinymce',
     'rest_framework',
-'snippets.apps.SnippetsConfig',
+'playtogether',
 ]
 
 MIDDLEWARE = [
@@ -141,7 +141,6 @@ TINYMCE_DEFAULT_CONFIG = {
     'width': '1200',
     'height': '500'}
 
-#分页
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
