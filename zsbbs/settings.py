@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'bbsapp',
     'tinymce',
     'rest_framework',
-'playtogether',
+    'playtogether',
+    'django_extensions',
+    'authapp',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'zsbbs.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,7 +129,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+LOGIN_URL = '/authapp/login'
 SITE_ROOT=os.path.join(os.path.abspath(os.path.dirname(__file__)),'..')
+
+#通用静态文件存放位置
 STATIC_ROOT = os.path.join(SITE_ROOT,'static')
 STATICFILES_DIRS = (
     ("css", os.path.join(STATIC_ROOT,'css')),
@@ -145,3 +150,4 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+

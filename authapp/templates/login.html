@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if errors %}
+        <div class="container">
+            <li>
+                {% for error in errors %}
+                    <p style="color: red;">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </li>
+        </div>
+    {% endif %}
+    <div class="container col-md-4 col-lg-6 col-sm-6 col-lg-offset-2">
+        <form action="" method="post"
+              class="form" role="form">{% csrf_token %}
+            <div class="form-group  required"><label class="control-label" for="username">账号</label>
+                <input class="form-control" id="username" name="username" required type="text" value="">
+            </div>
+            <div class="form-group  required"><label class="control-label" for="password">密码</label>
+                <input class="form-control" id="password" name="password" required type="password" value="">
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input id="remember_me" name="remember_me" type="checkbox" value="y"> 记住我
+                </label>
+            </div>
+            <input class="btn btn-default" id="submit" name="submit" type="submit" value="登录">
+        </form>
+    </div>
+{% endblock %}

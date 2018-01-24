@@ -1,7 +1,8 @@
 from playtogether.models import Snippet
 from playtogether.models import BilliardsUser,BilliardsInvite,BilliardsJoin
 from playtogether.serializers import playtogethererializer,UserSerializer
-from playtogether.serializers import BilliardsInviteSerializer,BilliardsUserSerializer,BilliardsJoinSerializer
+from playtogether.serializers import BilliardsInviteSerializer,BilliardsUserSerializer,BilliardsJoinSerializer,\
+    UserRegisterSerializer
 from rest_framework import generics
 from rest_framework import permissions
 from playtogether.permissions import IsOwnerOrReadOnly
@@ -20,10 +21,15 @@ def api_root(request, format=None):
     })
 
 from rest_framework import renderers
-from rest_framework.response import Response
 
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
+
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
+
 
 class BilliardsUserViewSet(viewsets.ModelViewSet):
     """
@@ -115,3 +121,43 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
+
+
+class UserLoginAPIView(APIView):
+   queryset = User.objects.all()
+   serializer_class = UserSerializer
+   permission_classes = (AllowAny,)
+
+   def post(self, request, format=None):
+       data = request.data
+       username = data.get('username')
+       password = data.get('password')
+       user = User.objects.get(username__exact=username)
+       if user.password == password:
+           serializer = UserSerializer(user)
+           new_data = serializer.data
+           # 记忆已登录用户
+           self.request.session['user_id'] = user.id
+           return Response(new_data, status=HTTP_200_OK)
+       return Response('password error', HTTP_400_BAD_REQUEST)
+
+
+#用于注册
+
+class UserRegisterAPIView(APIView):
+   queryset = User.objects.all()
+   serializer_class = UserRegisterSerializer
+   permission_classes = (AllowAny,)
+
+   def post(self, request, format=None):
+       data = request.data
+       username = data
+       if User.objects.filter(username__exact=username):
+           return Response("用户名已存在",HTTP_400_BAD_REQUEST)
+       serializer = UserRegisterSerializer(data=data)
+       if serializer.is_valid(raise_exception=True):
+           serializer.save()
+           return Response(serializer.data,status=HTTP_200_OK)
+       return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
